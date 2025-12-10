@@ -1,0 +1,28 @@
+# Build output
+bin/
+obj/
+
+# User-specific
+*.user
+*.userosscache
+*.suo
+*.userprefs
+
+# VS / Rider / Code
+.vs/
+.idea/
+*.sln.iml
+
+# Logs
+*.log
+
+# Dotnet
+*.exe
+*.dll
+*.pdb
+*.db
+*.cache
+*.config
+
+# Avalonia Designer junk (if any later)
+*.tmp
