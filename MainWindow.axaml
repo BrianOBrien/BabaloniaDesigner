@@ -1,0 +1,59 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:AvaloniaDesigner"
+        x:Class="AvaloniaDesigner.MainWindow"
+        x:CompileBindings="False"
+        Width="800" Height="600"
+        Title="Avalonia Designer v2">
+
+  <!-- 2 columns: toolbox | tree; 2 rows: main | debug button -->
+  <Grid RowDefinitions="*,Auto"
+        ColumnDefinitions="200,*"
+        Background="#202020">
+
+    <!-- TOOLBOX (left) -->
+    <ListBox Grid.Row="0"
+             Grid.Column="0"
+             x:Name="ToolboxList"
+             ItemsSource="{Binding ToolboxItems}"
+             Margin="4"
+             Background="#303030"
+             BorderBrush="#555555"
+             BorderThickness="1">
+      <ListBox.ItemTemplate>
+        <DataTemplate>
+          <TextBlock Text="{Binding Name}"
+                     Margin="4"
+                     Foreground="White" />
+        </DataTemplate>
+      </ListBox.ItemTemplate>
+    </ListBox>
+
+    <!-- TREE (right) -->
+    <TreeView Grid.Row="0"
+              Grid.Column="1"
+              x:Name="HierarchyTree"
+              ItemsSource="{Binding RootNodes}"
+              Margin="4"
+              Background="#303030"
+              BorderBrush="#555555"
+              BorderThickness="1"
+              DragDrop.AllowDrop="True">
+      <TreeView.ItemTemplate>
+        <TreeDataTemplate ItemsSource="{Binding Children}">
+          <TextBlock Text="{Binding Name}"
+                     Margin="2"
+                     Foreground="White" />
+        </TreeDataTemplate>
+      </TreeView.ItemTemplate>
+    </TreeView>
+
+    <!-- DEBUG BUTTON (bottom, spans both columns) -->
+    <Button Grid.Row="1"
+            Grid.ColumnSpan="2"
+            Margin="4"
+            Content="DEBUG: Add Button under Root"
+            Click="DebugAddButton_OnClick" />
+
+  </Grid>
+</Window>
