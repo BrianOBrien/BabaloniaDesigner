@@ -1,6 +1,6 @@
 using System.Collections.ObjectModel;
 
-namespace AvaloniaDesigner;
+namespace BabaloniaDesigner;
 
 public class DesignerViewModel
 {

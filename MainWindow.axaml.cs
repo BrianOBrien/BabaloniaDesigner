@@ -5,7 +5,7 @@ using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.VisualTree;
 
-namespace AvaloniaDesigner;
+namespace BabaloniaDesigner;
 
 public partial class MainWindow : Window
 {

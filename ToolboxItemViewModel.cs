@@ -1,4 +1,4 @@
-namespace AvaloniaDesigner;
+namespace BabaloniaDesigner;
 
 public class ToolboxItemViewModel
 {
