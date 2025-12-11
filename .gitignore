@@ -1,0 +1,32 @@
+# Build output
+bin/
+obj/
+
+# User-specific files
+*.user
+*.userprefs
+*.suo
+*.cache
+*.tmp
+
+# IDE files
+.vscode/
+.idea/
+*.csproj.user
+
+# Avalonia generated files
+*.axaml.g.cs
+*.xaml.g.cs
+*.g.cs
+
+# Logs
+*.log
+
+# OS specific
+.DS_Store
+Thumbs.db
+
+# NuGet
+*.nupkg
+*.snupkg
+packages/

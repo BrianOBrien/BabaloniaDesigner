@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("BabaloniaDesigner")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+67d0593e047b9da8ff734420a0cf9a0777124486")]
 [assembly: System.Reflection.AssemblyProductAttribute("BabaloniaDesigner")]
 [assembly: System.Reflection.AssemblyTitleAttribute("BabaloniaDesigner")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
