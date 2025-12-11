@@ -1,59 +1,170 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:local="clr-namespace:BabaloniaDesigner"
+        xmlns:d="https://github.com/avaloniaui/directive"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
         x:Class="BabaloniaDesigner.MainWindow"
-        x:CompileBindings="False"
-        Width="800" Height="600"
-        Title="Avalonia Designer v2">
+        Width="1300" Height="800"
+        Background="#2b2b2b"
+        Title="Babalonia Designer">
 
-  <!-- 2 columns: toolbox | tree; 2 rows: main | debug button -->
-  <Grid RowDefinitions="*,Auto"
-        ColumnDefinitions="200,*"
-        Background="#202020">
+    <!-- Columns: Controls | Hierarchy | Properties | Preview -->
+    <!-- Narrower first two, wider properties + preview -->
+    <Grid ColumnDefinitions="150, 210, 360, *"
+          RowDefinitions="Auto,*">
 
-    <!-- TOOLBOX (left) -->
-    <ListBox Grid.Row="0"
-             Grid.Column="0"
-             x:Name="ToolboxList"
-             ItemsSource="{Binding ToolboxItems}"
-             Margin="4"
-             Background="#303030"
-             BorderBrush="#555555"
-             BorderThickness="1">
-      <ListBox.ItemTemplate>
-        <DataTemplate>
-          <TextBlock Text="{Binding Name}"
-                     Margin="4"
-                     Foreground="White" />
-        </DataTemplate>
-      </ListBox.ItemTemplate>
-    </ListBox>
+        <!-- ===== HEADERS ===== -->
+        <TextBlock Grid.Row="0" Grid.Column="0"
+                   Text="Controls"
+                   FontWeight="Bold"
+                   Foreground="White"
+                   Margin="8,8,8,4"/>
 
-    <!-- TREE (right) -->
-    <TreeView Grid.Row="0"
-              Grid.Column="1"
-              x:Name="HierarchyTree"
-              ItemsSource="{Binding RootNodes}"
-              Margin="4"
-              Background="#303030"
-              BorderBrush="#555555"
-              BorderThickness="1"
-              DragDrop.AllowDrop="True">
-      <TreeView.ItemTemplate>
-        <TreeDataTemplate ItemsSource="{Binding Children}">
-          <TextBlock Text="{Binding Name}"
-                     Margin="2"
-                     Foreground="White" />
-        </TreeDataTemplate>
-      </TreeView.ItemTemplate>
-    </TreeView>
+        <TextBlock Grid.Row="0" Grid.Column="1"
+                   Text="Hierarchy"
+                   FontWeight="Bold"
+                   Foreground="White"
+                   Margin="8,8,8,4"/>
 
-    <!-- DEBUG BUTTON (bottom, spans both columns) -->
-    <Button Grid.Row="1"
-            Grid.ColumnSpan="2"
-            Margin="4"
-            Content="DEBUG: Add Button under Root"
-            Click="DebugAddButton_OnClick" />
+        <TextBlock Grid.Row="0" Grid.Column="2"
+                   Text="Properties"
+                   FontWeight="Bold"
+                   Foreground="White"
+                   Margin="8,8,8,4"/>
 
-  </Grid>
+        <TextBlock Grid.Row="0" Grid.Column="3"
+                   Text="Preview"
+                   FontWeight="Bold"
+                   Foreground="White"
+                   Margin="8,8,8,4"/>
+
+        <!-- ===== TOOLBOX ===== -->
+        <ListBox Grid.Row="1" Grid.Column="0"
+                 x:Name="ToolboxListBox"
+                 ItemsSource="{Binding ToolboxItems}"
+                 Background="#303030"
+                 Foreground="White"
+                 BorderThickness="0"
+                 SelectedIndex="-1"
+                 DoubleTapped="ToolboxListBox_OnDoubleTapped">
+
+            <ListBox.Styles>
+                <Style Selector="ListBoxItem">
+                    <Setter Property="Padding" Value="4,2" />
+                    <Setter Property="MinHeight" Value="20" />
+                </Style>
+            </ListBox.Styles>
+
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Name}"
+                               Margin="4,0"
+                               Foreground="White"
+                               FontSize="12" />
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+
+        <!-- ===== HIERARCHY ===== -->
+        <TreeView Grid.Row="1"
+                  Grid.Column="1"
+                  x:Name="HierarchyTree"
+                  ItemsSource="{Binding RootNodes}"
+                  Background="#303030"
+                  Foreground="White"
+                  BorderThickness="0"
+                  SelectionChanged="HierarchyTree_OnSelectionChanged">
+
+            <TreeView.Styles>
+                <!-- compact rows + selection/expansion binding -->
+                <Style Selector="TreeViewItem">
+                    <Setter Property="Padding" Value="2,0" />
+                    <Setter Property="Margin" Value="0" />
+                    <Setter Property="MinHeight" Value="18" />
+                    <Setter Property="IsExpanded"
+                            Value="{Binding IsExpanded, Mode=TwoWay}" />
+                    <Setter Property="IsSelected"
+                            Value="{Binding IsSelected, Mode=TwoWay}" />
+                </Style>
+            </TreeView.Styles>
+
+            <TreeView.ItemTemplate>
+                <TreeDataTemplate ItemsSource="{Binding Children}">
+                    <TextBlock Text="{Binding DisplayName}"
+                               Foreground="White"
+                               Margin="4,0"
+                               FontSize="12"/>
+                </TreeDataTemplate>
+            </TreeView.ItemTemplate>
+        </TreeView>
+
+        <!-- ===== PROPERTIES ===== -->
+        <Grid Grid.Column="2" Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <!-- Selected control name -->
+            <TextBlock Grid.Row="0"
+                       Text="{Binding SelectedNode.DisplayName}"
+                       Foreground="LightGreen"
+                       Margin="8,0,8,4"
+                       FontSize="12" />
+
+            <!-- Property grid -->
+            <ListBox Grid.Row="1"
+                     x:Name="PropertiesListBox"
+                     ItemsSource="{Binding SelectedProperties}"
+                     Background="#3a3a3a"
+                     BorderThickness="0"
+                     Foreground="White"
+                     Padding="0,0,12,12"
+                     ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+
+                <ListBox.Styles>
+                    <Style Selector="ListBoxItem">
+                        <Setter Property="Padding" Value="0" />
+                        <Setter Property="Margin" Value="0,0,0,1" />
+                        <Setter Property="MinHeight" Value="20" />
+                    </Style>
+                </ListBox.Styles>
+
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <!-- Auto for label, * for editor -->
+                        <Grid ColumnDefinitions="Auto,*">
+                            <TextBlock Text="{Binding Name}"
+                                       Margin="6,0,4,0"
+                                       VerticalAlignment="Center"
+                                       FontSize="12"
+                                       TextTrimming="CharacterEllipsis" />
+                            <TextBox Grid.Column="1"
+                                     Text="{Binding Value, Mode=TwoWay}"
+                                     Margin="0"
+                                     Height="20"
+                                     VerticalContentAlignment="Center"
+                                     Background="#2b2b2b"
+                                     Foreground="White"
+                                     BorderBrush="#555"
+                                     FontSize="12"/>
+                        </Grid>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </Grid>
+
+        <!-- ===== PREVIEW ===== -->
+        <Border Grid.Column="3"
+                Grid.Row="1"
+                Margin="8,0,8,8"
+                Background="#1a1a1a"
+                CornerRadius="4"
+                BorderBrush="#555"
+                BorderThickness="1">
+            <ContentPresenter Content="{Binding PreviewRoot}"
+                              Margin="16"/>
+        </Border>
+
+    </Grid>
 </Window>
